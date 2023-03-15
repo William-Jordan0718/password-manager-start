@@ -1,9 +1,26 @@
 from tkinter import *
-
+from tkinter import messagebox
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
+
+def save():
+    website = web_entry.get()
+    email = email_entry.get()
+    password = password_entry.get()
+
+    if website == "" or email == "" or password == "":
+        messagebox.showinfo(title="Blank Fields", message="You left a field blank")
+    else:
+        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} \nPassword: {password} \nIs it ok to save?")
+
+        if is_ok:
+            with open("data.txt", "a") as data_file:
+                data_file.write(f"{website} | {email} | {password}\n")
+                web_entry.delete(0, END)
+                password_entry.delete(0, END)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -23,6 +40,7 @@ web_label.grid(column=0, row=1)
 
 web_entry = Entry(width=35)
 web_entry.grid(column=1, row=1, columnspan=2)
+web_entry.focus()
 
 
 # Email Row
@@ -31,6 +49,8 @@ email_label.grid(column=0, row=2)
 
 email_entry = Entry(width=35)
 email_entry.grid(column=1, row=2, columnspan=2)
+email_entry.insert(0, "billythekid216@aol.com")
+
 
 
 # Password Row
@@ -45,7 +65,7 @@ button.grid(column=2, row=3)
 
 
 # Add Button
-add_button = Button(text="Add", width=36)
+add_button = Button(text="Add", width=36, command=save)
 add_button.grid(column=1, row=4, columnspan=2)
 
 
